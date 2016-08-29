@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css" crossorigin="anonymous">
+
+    <style type="text/css" rel="stylesheet">
+        .note {
+            transition: background 500ms;
+        }
+
+        .note.complete {
+            background: #6f8597;
+        }
+
+        .hideCompleted .complete {
+            display: none;
+        }
+        .text-muted {
+            color: #aac1d0
+        }
+
+    </style>
+</head>
+<body class="container">
+
+<div id="App">
+    <h1>Notes APP</h1>
+    <div class="">
+        <label for="title">Add a note</label>
+        <p class="input-group input-group-lg">
+            <input type="text" id="title" class="form-control">
+            <span class=" input-group-btn">
+                <button id="add" type="button" class="btn btn-success">Add</button>
+            </span>
+        </p>
+    </div>
+
+    <p class="form-inline">
+        <span class="form-group">
+            <input class="form-control" type="checkbox" id="hideCompleted">
+            <label for="hideCompleted"> Hide completed notes</label>
+        </span>
+    </p>
+    <div class="well">
+        <ul class="notes list-group" id="list">
+
+        </ul>
+    </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="scripts/Store.js"></script>
+<script src="scripts/Gizmo.js"></script>
+<script src="scripts/App.js"></script>
+<script src="scripts/Note.js"></script>
+</body>
+</html>

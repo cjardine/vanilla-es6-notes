@@ -1,0 +1,15 @@
+
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/
+.idea/deployment.xml
+.idea/encodings.xml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/watcherTasks.xml
+.idea/workspace.xml
+JSNew.iml
+node_modules/
+npm
+/.idea/
