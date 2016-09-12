@@ -1,8 +1,3 @@
-/*global */
-/**
- * User: Chris
- * Date: 8/28/2016, 3:40 PM
- */
 
 class Store {
     constructor() {

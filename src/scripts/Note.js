@@ -1,12 +1,12 @@
 class Note extends Gizmo {
-    constructor({_title, _complete, _inProgress}) {
+    constructor({_title = '', _complete = false, _inProgress = false}) {
         let template = '' +
             '<li class="note list-group-item">' +
             '<h3 class="title"></h3>' +
             '<div class="container">' +
             '<div class="row">' +
-            '<div class="col-xs-8">' +
-            '<label>Completed <input type="checkbox" class="isComplete"></label><label>In Progress <input type="checkbox" class="inProgress"></label>' +
+            '<div class="col-xs-8 checkbox">' +
+            '<label><checkbox value="" class="isComplete"></checkbox> Completed </label> <label><checkbox value="" class="inProgress"></checkbox> In Progress </label>' +
             '</div>' +
             '<div class="col-xs-4">' +
             '<div class="btn-group">' +
@@ -18,7 +18,6 @@ class Note extends Gizmo {
             '</div>' +
             '</li>';
         super(template);
-        this._$el = this._el.firstChild;
         this._data = {
             _title: _title,
             _complete: _complete,
@@ -27,42 +26,30 @@ class Note extends Gizmo {
 
         this.setCompleteClass(_complete);
 
-
         this._inputs = {
             isComplete: {
-                el: this._$el.querySelector('.isComplete'),
-                val: (val) => {
-                    if (val === undefined) {
-                        return this._data._complete
-                    } else {
-                        this.setCompleteClass(val);
-                        return this._data._complete = val;
-                    }
-                }
+                el: this.el.querySelector('.isComplete')
             },
             inProgress: {
-                el: this._$el.querySelector('.inProgress'),
-                val: (val) => {
-                    if (val === undefined) {
-                        return this._data._inProgress
-                    } else {
-                        return this._data._inProgress = val;
-                    }
-                }
+                el: this.el.querySelector('.inProgress')
             }
         };
 
         this.updateTitle(_title);
 
-        for (let key in this._inputs) {
-            let input = this._inputs[key];
-            Gizmo.setInput(input.val(), input.el);
-            input.el.addEventListener('change', (e) => {
-                input.val(Gizmo.getInput(e.target));
+        this._inputs.isComplete.el.data.instance.value = this._data._complete;
+        this._inputs.isComplete.el.addEventListener('update', (e) => {
+                this.complete = e.detail.value;
                 let event = new CustomEvent('updateNote');
                 document.dispatchEvent(event);
             });
-        }
+        this._inputs.inProgress.el.data.instance.value = this._data._inProgress;
+        this._inputs.inProgress.el.addEventListener('update', (e) => {
+                this.inProgress = e.detail.value;
+                let event = new CustomEvent('updateNote');
+                document.dispatchEvent(event);
+            });
+
         this._$el.querySelector('.current').addEventListener('click', () => {
             console.log('complete: ' + this._data._complete);
             console.log('inProgress: ' + this._data._inProgress);
@@ -74,9 +61,10 @@ class Note extends Gizmo {
             document.dispatchEvent(event);
         });
 
-        this.interval = setInterval(() => {
-            console.log('this is "' + this._data._title + '" checking in')
-        }, 3000);
+        // Ping heartbeat
+        // this.interval = setInterval(() => {
+        //     console.log('this is "' + this._data._title + '" checking in')
+        // }, 3000);
 
         // Add 10MB to each Note to test for memory leaks
         // this.test = (new Array(10 * 1024 * 1024)).join("x");
@@ -84,17 +72,17 @@ class Note extends Gizmo {
 
     setCompleteClass(value) {
         if (value) {
-            this._$el.classList.add('complete');
-            this._$el.classList.add('text-muted');
+            this.el.classList.add('complete');
+            this.el.classList.add('text-muted');
         } else {
-            this._$el.classList.remove('complete');
-            this._$el.classList.remove('text-muted');
+            this.el.classList.remove('complete');
+            this.el.classList.remove('text-muted');
         }
     }
 
     updateTitle(title) {
         this._data._title = title;
-        this._$el.querySelector('.title').innerHTML = this._data._title;
+        this.el.querySelector('.title').innerHTML = this._data._title;
     }
 
     get inProgress() {
@@ -110,8 +98,11 @@ class Note extends Gizmo {
     }
 
     set complete(value) {
-        this._data._complete = value;
-        this.setCompleteClass(value);
+        if (this._data._complete !== value) {
+            this._data._complete = value;
+            this.setCompleteClass(value);
+            this._inputs.isComplete.el.data.instance.value = value;
+        }
     }
 
 
@@ -121,10 +112,6 @@ class Note extends Gizmo {
 
     set title(title) {
         this.updateTitle(title);
-    }
-
-    get el() {
-        return this._$el;
     }
 
     get data() {

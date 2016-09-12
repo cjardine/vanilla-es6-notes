@@ -1,18 +1,25 @@
 class Gizmo {
-    constructor(template) {
-        var div = document.createElement("div");
-        div.innerHTML = template;
-        var fragment = document.createDocumentFragment();
-        while (div.firstChild) {
-            fragment.appendChild(div.firstChild);
+    constructor(template, parentEl) {
+        if (parentEl) {
+            this._parentEl = parentEl;
+            this._parentEl.data = {instance: this};
         }
-        this._el = fragment;
+
+        if (template !== undefined) {
+            var div = document.createElement("div");
+            div.innerHTML = template;
+            var fragment = document.createDocumentFragment();
+            while (div.firstChild) {
+                fragment.appendChild(div.firstChild);
+            }
+            this._el = fragment;
+            this._$el = this._el.firstChild;
+            App.app().parseGizmo(this.el);
+        }
     }
 
     static setInput(value, el) {
-        let output;
         if (el.nodeName === 'INPUT') {
-
             switch (el.getAttribute('type')) {
             case 'checkbox':
                 el.checked = value;
@@ -22,7 +29,6 @@ class Gizmo {
                 break;
             }
         }
-        return output;
     }
 
     static getInput(el) {
@@ -38,6 +44,14 @@ class Gizmo {
             }
         }
         return output;
-
     }
+
+    get el() {
+        return this._$el;
+    }
+
+    get parent() {
+        return this._parentEl;
+    }
+
 }

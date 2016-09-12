@@ -26,9 +26,12 @@ class App {
             if (this._gizmos.hasOwnProperty(gizmoName)) {
                 let gizmo = this._gizmos[gizmoName];
                 let matches = el.querySelectorAll(gizmo.query);
-                matches.forEach((match) => {
-                    new gizmo.className(match)
-                });
+                if (matches.length) {
+
+                    matches.forEach((match) => {
+                        new gizmo.className(match)
+                    });
+                }
             }
         }
     }
