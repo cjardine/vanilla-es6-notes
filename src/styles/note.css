@@ -1,0 +1,12 @@
+.note {
+}
+
+.note .title {
+    color: aqua;
+}
+.note:last-child {
+}
+
+.note.complete {
+}
+

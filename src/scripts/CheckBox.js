@@ -1,5 +1,4 @@
-/*global */
-
+"use strict";
 class CheckBox extends Gizmo {
     constructor(parentEl) {
         let template = '' +

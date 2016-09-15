@@ -1,3 +1,4 @@
+"use strict";
 class Gizmo {
     constructor(template, parentEl) {
         if (parentEl) {
@@ -14,6 +15,7 @@ class Gizmo {
             }
             this._el = fragment;
             this._$el = this._el.firstChild;
+            this.id = Gizmo.UUID();
             App.app().parseGizmo(this.el);
         }
     }
@@ -46,6 +48,20 @@ class Gizmo {
         return output;
     }
 
+    /**
+     * UUID
+     * @returns {string}
+     * @constructor
+     */
+    static UUID() {
+        let id = '';
+        for (let i = 0; i < 16; i++) {
+            let num = Math.floor(Math.random() * 16);
+            id += num.toString(16);
+        }
+        return id + '-' + Date.now().toString(16);
+    }
+
     get el() {
         return this._$el;
     }
@@ -54,4 +70,7 @@ class Gizmo {
         return this._parentEl;
     }
 
+    get app() {
+        return App.app();
+    }
 }

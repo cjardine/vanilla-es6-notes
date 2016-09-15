@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+html {
+    background-color: #111;
+    border-left: 1em #334 solid;
+    color: #eee;
+    font-family: 'Source Code Pro', monospace;
+}
+
+h1, h2, h3, h4, h5, h6, hr, p, input[type=text], button, label {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0;
+    line-height: 1.6em;
+    margin: 0.8em 0;
+}
+
+hr {
+    color: transparent;
+    height: 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px dashed #aaa;
+}
+
+ul {
+    margin: 0 0 0 4em;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    border-bottom: 2px dashed #aaa;
+    margin: 0 0 0.8em 0;
+    padding: 0 0 0.8em 0;
+    list-style: none;
+}
+
+input[type=text] {
+    border: 1px solid #334;
+    border-right-width: 5px;
+    border-left-width: 5px;
+    background-color: #111;
+    color: #eee;
+    display: block;
+    font-family: 'Source Code Pro', monospace;
+    width: 100%;
+    padding: 0 5px;
+}
+
+input[type=text]:focus {
+    border: 1px solid aqua;
+    border-right-width: 5px;
+    border-left-width: 5px;
+    background-color: #000;
+    color: #fff;
+    outline: none;
+}
+
+input[type=checkbox] {
+    /*display: none;*/
+}
+
+button {
+    background-color: #b61a4a;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Source Code Pro', monospace;
+    margin-right: 20px;
+    padding: 1px 5px;
+}
+button:hover {
+    background-color: #fff;
+    color: #b61a4a;
+}
+
+.hidden {
+    display: none;
+}
+
+.hideCompleted .complete {
+    border: none;
+    height: 0;
+    margin: 0;
+    overflow: hidden;;
+    padding: 0;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.column {
+    flex: 0 1 auto;
+}
+
+.column.column-flex {
+    flex: auto;
+}
+
+/*.text-muted {*/
+/*color: #aaaaaa;*/
+/*}*/

@@ -6,110 +6,9 @@
     <title>Title</title>
     <!-- Latest compiled and minified CSS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
-    <style type="text/css" rel="stylesheet">
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            min-height: 100%;
-        }
-
-        html {
-            background-color: #111;
-            border-left: 1em #334 solid;
-            color: #eee;
-            font-family: 'Source Code Pro', monospace;
-        }
-
-        h1, h2, h3, h4, h5, h6, hr, p, input[type=text], button, label {
-            font-size: 14px;
-            font-weight: normal;
-            padding: 0;
-            line-height: 1.6em;
-            margin: 0.8em 0;
-        }
-
-        hr {
-            color: transparent;
-            height: 0;
-            background-color: transparent;
-            border: none;
-            border-bottom: 2px dashed #aaa;
-        }
-
-        ul {
-            margin: 0 0 0 4em;
-            padding: 0;
-            list-style: none;
-        }
-
-        li {
-            border-bottom: 2px dashed #aaa;
-            margin: 0 0 0.8em 0;
-            padding: 0 0 0.8em 0;
-            list-style: none;
-        }
-
-        input[type=text] {
-            border: 1px solid #334;
-            border-right-width: 5px;
-            border-left-width: 5px;
-            background-color: #111;
-            color: #eee;
-            display: block;
-            font-family: 'Source Code Pro', monospace;
-            width: 100%;
-            padding: 0 5px;
-        }
-
-        input[type=text]:focus {
-            border: 1px solid aqua;
-            border-right-width: 5px;
-            border-left-width: 5px;
-            background-color: #000;
-            color: #fff;
-            outline: none;
-        }
-
-        input[type=checkbox] {
-            /*display: none;*/
-        }
-
-        button {
-            background-color: transparent;
-            border: none;
-            color: #b61a4a;
-            display: block;
-            font-family: 'Source Code Pro', monospace;
-            cursor: pointer;
-        }
-
-        .note {
-        }
-
-        .note .title {
-            color: aqua;
-        }
-        .note:last-child {
-        }
-
-        .note.complete {
-        }
-
-        .hideCompleted .complete {
-            border: none;
-            height: 0;
-            margin: 0;
-            overflow: hidden;;
-            padding: 0;
-        }
-
-        /*.text-muted {*/
-        /*color: #aaaaaa;*/
-        /*}*/
-    </style>
+    <link href="styles/base.css" rel="stylesheet">
+    <link href="styles/modal.css" rel="stylesheet">
+    <link href="styles/note.css" rel="stylesheet">
 </head>
 
 <body class="container">
@@ -119,12 +18,14 @@
     <hr/>
     <div class="">
         <label for="title">Add a To Do</label>
-        <p class="input-group input-group-lg">
+        <div class="columns">
+            <div class="column column-flex">
             <input type="text" id="title" class="form-control" placeholder="Type your todo here and press add ...">
-            <span class=" input-group-btn">
+            </div>
+            <div class="column">
                 <button id="add" type="button" class="btn btn-success">Add</button>
-            </span>
-        </p>
+            </div>
+        </div>
     </div>
 
     <p class="form-inline">
@@ -139,9 +40,7 @@
             <label for="completeAll"> Complete all</label>
         </span>
     </p>
-    <p class="form-inline">
         <button id="deleteAll" type="button" class="btn btn-success">Delete All</button>
-    </p>
     <hr/>
     <div class="well">
         <ul class="notes list-group" id="list">

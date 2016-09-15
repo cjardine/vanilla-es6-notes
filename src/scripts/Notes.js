@@ -1,3 +1,4 @@
+"use strict";
 class Notes extends Gizmo {
 
     constructor() {
@@ -30,6 +31,8 @@ class Notes extends Gizmo {
         document.addEventListener('updateNote', (e) => this.saveNotes());
         document.addEventListener('deleteNote', (e) => this.deleteNote(e));
 
+        this.app.registerBeforeUnload({name: this.id, callback: this.saveNotes.bind(this), order: this.app.orderNames.LAST})
+
     }
 
     createNote(data) {
@@ -55,13 +58,14 @@ class Notes extends Gizmo {
     deleteAll() {
         let self = this;
         let promise = new Promise(function (resolve, reject) {
-            self._modal = new Modal(resolve, reject);
+            self._modal = new Modal(resolve, reject, {});
             self._modal._parentEl.appendChild(self._modal.el);
         });
 
         promise
             .then(function () {
                 self.notes.forEach((note, index) => {
+                    note.destroy();
                     self._listEl.removeChild(note.el);
                 });
                 self.notes = [];
@@ -78,6 +82,7 @@ class Notes extends Gizmo {
     deleteNote(event) {
         this.notes.forEach((note, index) => {
             if (event.detail === note) {
+                note.destroy();
                 this._listEl.removeChild(note.el);
                 this.notes.splice(index, 1);
             }
