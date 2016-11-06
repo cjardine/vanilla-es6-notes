@@ -36,7 +36,7 @@ class Notes extends Gizmo {
     }
 
     createNote(data) {
-        let newNote = new Note(data);
+        let newNote = new Note(data, this);
         this.notes.push(newNote);
         this._listEl.appendChild(newNote.el);
     }
@@ -120,6 +120,15 @@ class Notes extends Gizmo {
     completeAll(event) {
         this.notes.forEach((note, index) => {
             note.complete = Gizmo.getInput(this._completeAll);
+        });
+    }
+    showMap(clickedNote) {
+        this.notes.forEach((note) => {
+            if (clickedNote === note) {
+                note.showMap = true;
+            }else {
+                note.showMap = false;
+            }
         });
     }
 

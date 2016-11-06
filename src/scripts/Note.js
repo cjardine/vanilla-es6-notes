@@ -1,28 +1,72 @@
 "use strict";
 class Note extends Gizmo {
-    constructor({_title = '', _complete = false, _inProgress = false, _created = new Date(), _timeSpent = []}) {
+    constructor({
+        _title = '',
+        _complete = false,
+        _inProgress = false,
+        _created = new Date(),
+        _timeSpent = [],
+        _location
+    }, parentScope) {
         let template = '' +
-            '<li class="note list-group-item columns">' +
+            '<li class="note">' +
+            '<div class="columns">' +
             '<div class="column column-flex">' +
             '<h3 class="title"></h3>' +
             '<p>Total Time: <span class="totalTime"></span></p>' +
             '<label><checkbox value="" class="isComplete"></checkbox> Completed </label> <label><checkbox value="" class="inProgress"></checkbox> In Progress </label>' +
             '</div>' +
             '<div class="column">' +
-            '<button type="button" class="btn btn-primary current btn-xs">output current</button>' +
-            '<button type="button" class="btn btn-danger delete btn-xs">delete</button>' +
+            '<p>' +
+            '<button type="button" class="current">output current</button>' +
+            '<button type="button" class="delete">delete</button>' +
+            '</p>' +
+            '<p>' +
+            '<button type="button" class="location">show map</button>' +
+            '</p>' +
+            '</div>' +
+            '</div>' +
+            '<div>' +
+            '<map gz-model="data._location.model"></map>' +
             '</div>' +
             '</li>';
         super(template);
+
         this._data = {
             _title: _title,
             _complete: _complete,
             _inProgress: _inProgress,
             _created: _created,
-            _timeSpent: _timeSpent
+            _timeSpent: _timeSpent,
+            _location: _location
         };
 
+        this.location = new Location();
+
+        if (this._data._location) {
+            this.location.model = this._data._location;
+        } else {
+            this._data._location = this.location.model;
+        }
+
+        this.location.updateCallback = () => {this._data._location = this.location.model; this.save();};
+
+
         this._timer = null;
+
+
+        this.updateTitle(_title);
+
+        this.app.registerBeforeUnload({
+            name: this.id,
+            callback: this.destroy.bind(this),
+            order: this.app.orderNames.FIRST
+        });
+        this.init();
+    }
+
+    init() {
+        super.init();
 
         this._inputs = {
             isComplete: {
@@ -33,19 +77,29 @@ class Note extends Gizmo {
             }
         };
 
-        this.updateTitle(_title);
 
         this._inputs.isComplete.el.data.instance.value = this._data._complete;
+
         this._inputs.isComplete.el.addEventListener('update', (e) => {
             this.complete = e.detail.value;
-            let event = new CustomEvent('updateNote');
-            document.dispatchEvent(event);
+            this.save();
         });
+
         this._inputs.inProgress.el.data.instance.value = this._data._inProgress;
+
         this._inputs.inProgress.el.addEventListener('update', (e) => {
             this.inProgress = e.detail.value;
-            let event = new CustomEvent('updateNote');
-            document.dispatchEvent(event);
+            this.save();
+        });
+
+        this.map = this.el.querySelector('map');
+        this.showMapButton = this.el.querySelector('.location');
+        this.showMapButton.addEventListener('click', () => {
+            if (this.showMap) {
+                this.showMap = !this.showMap;
+            } else {
+                this.app._notes.showMap(this);
+            }
         });
 
         this.el.querySelector('.current').addEventListener('click', () => {
@@ -66,14 +120,11 @@ class Note extends Gizmo {
 
         // Add 10MB to each Note to test for memory leaks
         // this.test = (new Array(10 * 1024 * 1024)).join("x");
-        this.inProgress = _inProgress;
-        this.complete = _complete;
+        this.inProgress = this._data._inProgress;
+        this.complete = this._data._complete;
 
-        this.app.registerBeforeUnload({
-            name: this.id,
-            callback: this.destroy.bind(this),
-            order: this.app.orderNames.FIRST
-        })
+        this._showMap = false;
+        this.showMap = this._showMap;
     }
 
     destroy() {
@@ -89,6 +140,11 @@ class Note extends Gizmo {
             this.el.classList.remove('complete');
             this.el.classList.remove('text-muted');
         }
+    }
+
+    save() {
+        let event = new CustomEvent('updateNote');
+        document.dispatchEvent(event);
     }
 
     updateTitle(title) {
@@ -214,9 +270,9 @@ class Note extends Gizmo {
                 this.inProgress = false;
             }
             this._data._complete = value;
-            this.setCompleteClass(value);
             this._inputs.isComplete.el.data.instance.value = value;
         }
+        this.setCompleteClass(value);
     }
 
 
@@ -230,6 +286,32 @@ class Note extends Gizmo {
 
     get data() {
         return this._data;
+    }
+
+    get showMap() {
+        return this._showMap;
+    }
+
+    set showMap(value) {
+        this._showMap = value;
+        if (value) {
+            this.map.classList.remove('hidden');
+            let event = new CustomEvent('refreshMap');
+            this.map.dispatchEvent(event);
+            this.showMapButton.innerHTML = 'hide map'
+
+        } else {
+            this.map.classList.add('hidden');
+            this.showMapButton.innerHTML = 'show map'
+        }
+    }
+
+    get location() {
+        return this._data._location;
+    }
+
+    set location(value) {
+        this._data._location = value;
     }
 
 }

@@ -1,0 +1,15 @@
+map {
+    display: block;
+    height: 400px;
+    overflow: hidden;
+    transition: height ease-in-out 0.67s;
+}
+map .map-container {
+    height: 400px;
+}
+
+map.hidden {
+    display: block;
+    height: 0;
+}
+

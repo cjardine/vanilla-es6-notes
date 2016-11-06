@@ -19,7 +19,8 @@ class CheckBox extends Gizmo {
             this.value = Gizmo.getInput(event.currentTarget)
         });
 
-        this.parent.appendChild(this.el);
+
+        this.init();
     }
 
     get value() {

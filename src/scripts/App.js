@@ -23,6 +23,8 @@ class App {
             last: []
         };
 
+        this.mapReady = mapReady;
+
         window.addEventListener('beforeunload', () => this.beforeUnload());
         return this;
     }
@@ -98,23 +100,23 @@ class App {
         this._unload.last.forEach((unloadObject) => {unloadObject.callback();});
     }
 
-    parseGizmo(el) {
-        for (let gizmoName in this._gizmos) {
-            if (this._gizmos.hasOwnProperty(gizmoName)) {
-                let gizmo = this._gizmos[gizmoName];
-                let matches = el.querySelectorAll(gizmo.query);
-                if (matches.length) {
-
-                    matches.forEach((match) => {
-                        new gizmo.className(match)
-                    });
-                }
-            }
-        }
-    }
 
     get orderNames() {
         return this._orderNames;
+    }
+
+    get gizmos() {
+        return this._gizmos;
+    }
+
+    get mapReady() {
+        return this._mapReady;
+    }
+
+    set mapReady(value) {
+        this._mapReady = value;
+        let event = new CustomEvent('mapReady', {detail: {value: value}});
+        document.dispatchEvent(event);
     }
 
     static app() {
@@ -128,3 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
     window.app = new App();
     window.app.init();
 });
+
+function initMap() {
+    if (window.app) {
+        window.app.mapReady = true;
+    }
+    window.mapReady = true;
+}
+
+window.mapReady = false;

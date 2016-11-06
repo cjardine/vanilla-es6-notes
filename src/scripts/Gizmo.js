@@ -3,7 +3,13 @@ class Gizmo {
     constructor(template, parentEl) {
         if (parentEl) {
             this._parentEl = parentEl;
-            this._parentEl.data = {instance: this};
+            if (parentEl.data === undefined) {
+                parentEl.data = {};
+            }
+            if (parentEl.data.$$parentScope) {
+                this.parentScope = parentEl.data.$$parentScope;
+            }
+            this._parentEl.data.instance = this;
         }
 
         if (template !== undefined) {
@@ -16,7 +22,49 @@ class Gizmo {
             this._el = fragment;
             this._$el = this._el.firstChild;
             this.id = Gizmo.UUID();
-            App.app().parseGizmo(this.el);
+            if (parentEl) {
+                this.parent.appendChild(this.el);
+            }
+        }
+    }
+
+    init() {
+        this.parseGizmo(this.el);
+    }
+
+    parseGizmo(el) {
+        let gizmos = App.app()._gizmos;
+        for (let gizmoName in gizmos) {
+            if (gizmos.hasOwnProperty(gizmoName)) {
+                let gizmo = gizmos[gizmoName];
+                let matches = el.querySelectorAll(gizmo.query);
+                if (matches.length) {
+                    if (!matches.forEach) {
+                        matches = Array.prototype.slice.call(matches)
+                    }
+                    matches.forEach((match) => {
+                        if (match.data === undefined) {
+                            match.data = {};
+                        }
+                        match.data.$$parentScope = this;
+                        let newGizmo = new gizmo.className(match);
+                    });
+                }
+            }
+        }
+    }
+
+    parseInternals() {
+        if (this.parent) {
+            let modelString = this.parent.getAttribute('gz-model');
+            if (modelString !== undefined && modelString !== null && modelString !== '') {
+                let modelStringArray = modelString.split('.');
+                let model = this.parentScope;
+                modelStringArray.forEach((string) => {
+                    model = model[string];
+                });
+                this.model = model;
+            }
         }
     }
 
@@ -68,6 +116,24 @@ class Gizmo {
 
     get parent() {
         return this._parentEl;
+    }
+
+    get parentScope() {
+        return this._parentScope;
+    }
+
+    set parentScope(scope) {
+        this._parentScope = scope;
+        this.parseInternals();
+    }
+
+    get model() {
+        return this._model;
+    }
+
+    set model(model) {
+        this._model = model;
+        console.log(model);
     }
 
     get app() {
