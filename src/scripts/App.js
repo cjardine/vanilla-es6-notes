@@ -1,6 +1,9 @@
 "use strict";
-class App {
+class App extends Base {
     constructor() {
+
+        super();
+
         this._gizmos = {};
         for (let gizmo of App.gizmoList) {
             this.registerGizmo(gizmo);
@@ -26,14 +29,18 @@ class App {
         this.mapReady = mapReady;
 
         window.addEventListener('beforeunload', () => this.beforeUnload());
+
+        window.app = this;
+
+        this._notes = new Notes();
+        let initEvent = new CustomEvent('AppInit');
+        document.dispatchEvent(initEvent);
+
         return this;
     }
 
 
     init() {
-        this._notes = new Notes();
-        let initEvent = new CustomEvent('AppInit');
-        document.dispatchEvent(initEvent);
     }
 
 

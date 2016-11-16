@@ -51,14 +51,33 @@
 </div>
 
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- =============== FIREBASE --->
+<script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyAgwghlHKwCBlFjTQddw53YuWEG6Ckg27Y",
+        authDomain: "notestest-b9010.firebaseapp.com",
+        databaseURL: "https://notestest-b9010.firebaseio.com",
+        storageBucket: "",
+        messagingSenderId: "813755029463"
+    };
+    firebase.initializeApp(config);
+</script>
+
+<!-- =============== FIREBASE-UI Sign-in -->
+<script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
+
+<!-- =============== jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <!-- -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-k-PiuAMaJaBnSl320pcb830KG2fJzRw&libraries=places&callback=initMap" async defer></script>
 
-<!-- Latest compiled and minified JavaScript -->
+<!-- =============== Latest compiled and minified JavaScript -->
 <script src="scripts/Store.js"></script>
+<script src="scripts/Base.js"></script>
 <script src="scripts/Gizmo.js"></script>
 <script src="scripts/Location.js"></script>
 <script src="scripts/App.js"></script>

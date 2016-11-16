@@ -1,6 +1,9 @@
 "use strict";
-class Gizmo {
+class Gizmo extends Base {
     constructor(template, parentEl) {
+
+        super();
+
         if (parentEl) {
             this._parentEl = parentEl;
             if (parentEl.data === undefined) {

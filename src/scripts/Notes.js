@@ -1,7 +1,7 @@
 "use strict";
 class Notes extends Gizmo {
 
-    constructor() {
+    constructor(app) {
         super();
 
         this._appEl = document.querySelector('#App');
